@@ -6,11 +6,8 @@ import sys
 import configparser
 import os.path
 
-def get_request_url_data(auth_file, url):
+def get_request_url_data(config_file):
     
-    config_file = auth_file
-    url_loc = url
-
     config = configparser.ConfigParser()
     try:
         config.read(config_file)
@@ -20,6 +17,7 @@ def get_request_url_data(auth_file, url):
     
     password = config.get("myvars", "passwd");
     username = config.get("myvars", "username");
+    url = config.get("myvars", "url");
 
     try:
         r = requests.get(url, auth=(username, password))

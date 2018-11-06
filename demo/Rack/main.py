@@ -15,9 +15,8 @@ def main():
 
     line = "=" * 50
     explisit_tag = "available stock"
-    url_gl = "https://racktables-001.sl5.misp.co.uk/racktables/index.php?page=depot"
     config_file = "/Users/akifyusein/.my_a_pass"
-    req = get_request_url_data(config_file, url_gl)
+    req = get_request_url_data(config_file)
     
     soup = BeautifulSoup(req.text, 'lxml')
 
@@ -28,7 +27,7 @@ def main():
     i = 0
     for url in urls:
         i += 1
-        if i > 25:
+        if i > 6:
             sys.exit(3)
         
         try:
@@ -61,3 +60,4 @@ if __name__ == '__main__':
 ## Object type: Server
 ## Explicit tags: Tanium
 ## Asset tag:
+## Create help giving info which key value needes to be provided
