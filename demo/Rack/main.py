@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import lxml.html as lh
-import pandas as pd
 import re
 import sys
 import configparser
@@ -10,15 +9,16 @@ import time
 from func import *
 from get_objects_info import *
 from is_object_in import *
+from print_obj_dict import print_obj_dict
 
 def main():
 
     line = "=" * 50
-    # explisit_tag = "Shared cPanel"
     explisit_tag = "available stock"
     url_gl = "https://racktables-001.sl5.misp.co.uk/racktables/index.php?page=depot"
     config_file = "/Users/akifyusein/.my_a_pass"
     req = get_request_url_data(config_file, url_gl)
+    
     soup = BeautifulSoup(req.text, 'lxml')
 
     # Create urls for all objects except PDU and cable organizer
@@ -28,8 +28,8 @@ def main():
     i = 0
     for url in urls:
         i += 1
-        if i % 3 == 0:
-            time.sleep(3)
+        if i > 25:
+            sys.exit(3)
         
         try:
             req = get_request_url_data(config_file, url)
@@ -54,8 +54,6 @@ def main():
  
 if __name__ == '__main__':
     main()
-
-
 
 ## Hypervisor: Yes
 ## Common name: hvhost-008

@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import lxml.html as lh
-import pandas as pd
 import re
 import sys
 import configparser
@@ -60,17 +59,17 @@ def get_all_object_by_id(soup):
     return urls
 
 ### end ########################################
-def print_obj_dict(object_dict, obj_num):
-    line = "=" * 50
-    explisit_tags=object_dict.get('Explicit_tags')
-    common_name = object_dict.get('Common_name')
-    asset_tag = object_dict.get('Asset_tag')
-    fqdn = object_dict.get('FQDN')
-
-    s = """Object Num: %s\nFQDN: %s\nCommon name: %s\nExplisit tags: %s\nTag: %s """ \
-     % ( obj_num, fqdn, common_name, explisit_tags, asset_tag)
-
-    print(line)
-    print(s)
-    print(line)
-### end ########################################
+#def print_obj_dict(object_dict, obj_num):
+#    line = "=" * 50
+#    explisit_tags=object_dict.get('Explicit_tags')
+#    common_name = object_dict.get('Common_name')
+#    asset_tag = object_dict.get('Asset_tag')
+#    fqdn = object_dict.get('FQDN')
+#
+#    s = """Object Num: %s\nFQDN: %s\nCommon name: %s\nExplisit tags: %s\nTag: %s """ \
+#     % ( obj_num, fqdn, common_name, explisit_tags, asset_tag)
+#
+#    print(line)
+#    print(s)
+#    print(line)
+#### end ########################################

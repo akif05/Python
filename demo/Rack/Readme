@@ -149,14 +149,12 @@ def main():
 
     # Create urls for all objects except PDU and cable organizer
     urls = get_all_object_by_id(soup)
+    
+    ## Clear variable soup
     soup = ""
+
     # From each url in list get data and find objects with explisit tag Shared cPanel
-    i = 0
     for url in urls:
-        i += 1
-        if i % 3 == 0:
-            time.sleep(3)
-        
         try:
             req = get_request_url_data(config_file, url)
         except:
@@ -168,7 +166,6 @@ def main():
         ## Get the key and lookup from command line!
         key = 'Explicit_tags'
         lookup = 'managed'
-        # lookup = 'available stock'
         flag = is_object_in(obj_dict, key, lookup)
 
         if flag == True:
@@ -180,8 +177,6 @@ def main():
  
 if __name__ == '__main__':
     main()
-
-
 
 ## Hypervisor: Yes
 ## Common name: hvhost-008

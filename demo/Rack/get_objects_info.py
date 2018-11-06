@@ -20,7 +20,6 @@ def get_objects_info(beauty_soap):
         else:
             value_list.append("No_value")
 
-    # object_dict = dict(zip(key_list, value_list))
     return dict(zip(key_list, value_list))
 
 
