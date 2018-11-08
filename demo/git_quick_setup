@@ -28,3 +28,73 @@ cd /Users/akifyusein/PycharmProjects
 git add -A
 git commit -a -m "$1"
 git push -u origin master
+
+#################################################
+############# GIT #################################################################
+## Make a copy of a repository and sote in local computer
+git clone https://github.com/akif05/Python.git
+
+# Add file or all files
+git add filename   | git add -A
+
+# Save the changes to repository as a new version
+git  commit -am "message "
+
+# Check status of repo. Will show which brunch are we as well
+git status
+
+# Send changes made in local mashine(origin) to master in github
+git push origin master
+
+# Conflicts
+  open file that is in conflict.
+  Lines between <<<<<< HEAD
+    changes I made
+  and ==================== 
+    changes that are in remote repo
+  >>>>>>
+  To resolve delete all lines and keep only the one you need!
+  ## This means delete <<<<HEAD AND ===== AND >>>>> LINES AS WELL
+
+# Get info and commit identifiers that can be used to reset for example
+git log
+
+
+# Go to older version
+# Will remove all changes made and will reset to the version we want
+# All new changes will be lost!!!
+git reset --hard 143QASHAK;SDF
+
+# Reset to the version that is on github
+git -reset --hard origin/master
+
+# Working on branches
+# is version of repository
+# list all branches
+git branch
+
+# Create branch
+git branch branch_name
+# start workin on the branch with name branch_name
+git checkout branch_names
+
+# Creata new branch and start wrokin on it
+git checkout -b branch_name
+
+# Macke changes on the branch and whe ready merge it 
+git merge brnach_name 
+
+git branch test
+git branch
+git checkout test
+git branch
+# macke changes !!!
+git commit -am "Made changes in test branch"
+
+# Now we can move betwee branches if needed: git checkout master or git checkout test
+git checkout master
+git pull origin master
+git merge test
+
+# After merge we can delete the test branch
+git brach -D test
