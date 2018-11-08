@@ -6,21 +6,8 @@ import sys
 import configparser
 import os.path
 
-def get_request_url_data(auth_file, url):
+def get_request_url_data(url, username, password):
     
-    config_file = auth_file
-    url_loc = url
-
-    config = configparser.ConfigParser()
-    try:
-        config.read(config_file)
-    except:
-        print(f"Reading file {config_file} problem")
-        sys.exit(2)
-    
-    password = config.get("myvars", "passwd");
-    username = config.get("myvars", "username");
-
     try:
         r = requests.get(url, auth=(username, password))
     except:
@@ -35,12 +22,11 @@ def get_request_url_data(auth_file, url):
     return r
 ### end ########################################
 
-def get_all_object_by_id(soup):
+def get_all_object_by_id(soup, obj_base_url):
 
     urls = []
     exlude_list = ["CableOrganizer", "Organizer", "spacer", "PDU", "Shelf", "PatchPanel"]
 
-    obj_base_url = "https://racktables-001.sl5.misp.co.uk/racktables/index.php?page=object&tab=default&object_id="
     div = soup.find("div", {"class":"portlet"})
     table = div.find("table")
     rows = table.find_all("tr", {"class": ["row_odd", "row_even"]})
@@ -59,17 +45,3 @@ def get_all_object_by_id(soup):
     return urls
 
 ### end ########################################
-#def print_obj_dict(object_dict, obj_num):
-#    line = "=" * 50
-#    explisit_tags=object_dict.get('Explicit_tags')
-#    common_name = object_dict.get('Common_name')
-#    asset_tag = object_dict.get('Asset_tag')
-#    fqdn = object_dict.get('FQDN')
-#
-#    s = """Object Num: %s\nFQDN: %s\nCommon name: %s\nExplisit tags: %s\nTag: %s """ \
-#     % ( obj_num, fqdn, common_name, explisit_tags, asset_tag)
-#
-#    print(line)
-#    print(s)
-#    print(line)
-#### end ########################################
