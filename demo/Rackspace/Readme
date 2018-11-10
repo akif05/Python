@@ -1,27 +1,14 @@
-File name: ./func.py
+======================
+###### func.py #######
 import requests
 from bs4 import BeautifulSoup
 import lxml.html as lh
-import pandas as pd
 import re
 import sys
 import configparser
 import os.path
 
-def get_request_url_data(auth_file, url):
-    
-    config_file = auth_file
-    url_loc = url
-
-    config = configparser.ConfigParser()
-    try:
-        config.read(config_file)
-    except:
-        print(f"Reading file {config_file} problem")
-        sys.exit(2)
-    
-    password = config.get("myvars", "passwd");
-    username = config.get("myvars", "username");
+def get_request_url_data(url, username, password):
 
     try:
         r = requests.get(url, auth=(username, password))
@@ -37,12 +24,11 @@ def get_request_url_data(auth_file, url):
     return r
 ### end ########################################
 
-def get_all_object_by_id(soup):
+def get_all_object_by_id(soup, obj_base_url):
 
     urls = []
     exlude_list = ["CableOrganizer", "Organizer", "spacer", "PDU", "Shelf", "PatchPanel"]
 
-    obj_base_url = "https://racktables-001.sl5.misp.co.uk/racktables/index.php?page=object&tab=default&object_id="
     div = soup.find("div", {"class":"portlet"})
     table = div.find("table")
     rows = table.find_all("tr", {"class": ["row_odd", "row_even"]})
@@ -61,22 +47,37 @@ def get_all_object_by_id(soup):
     return urls
 
 ### end ########################################
-def print_obj_dict(object_dict, obj_num):
-    line = "=" * 50
-    explisit_tags=object_dict.get('Explicit_tags')
-    common_name = object_dict.get('Common_name')
-    asset_tag = object_dict.get('Asset_tag')
-    fqdn = object_dict.get('FQDN')
+======================
+###### get_config_data.py #######
+import configparser
+import os.path
 
-    s = """Object Num: %s\nFQDN: %s\nCommon name: %s\nExplisit tags: %s\nTag: %s """ \
-     % ( obj_num, fqdn, common_name, explisit_tags, asset_tag)
+def get_config_data (config_file):
 
-    print(line)
-    print(s)
-    print(line)
-### end ########################################
-===============================================
-File name: ./get_objects_info.py
+    d = dict();
+    config = configparser.ConfigParser()
+    try:
+        config.read(config_file)
+    except:
+        print(f"Reading file {config_file} problem.")
+        sys.exit(2)
+
+    d['passwd'] = config.get("myvars", "passwd");
+    d['username'] = config.get("myvars", "username");
+    d['url'] = config.get("myvars", "url");
+    d['base_url'] = config.get("myvars", "base_url");
+    
+    return d
+======================
+###### get_objects_info.py #######
+## Get table frm soup and extract the key value from html table
+## format of row in table: 
+#<tr>
+# <th class="tdright sticker" width="50%">FQDN:</th>
+# <td class="tdleft"><a  href="ssh://mail8.webfaction.com">mail8.webfaction.com</a></td>
+#</tr>
+# In <th> tag is the key and in <td> tag is the value we are using to create dictionary
+
 def get_objects_info(beauty_soap):
 
     key_list = []
@@ -99,12 +100,11 @@ def get_objects_info(beauty_soap):
         else:
             value_list.append("No_value")
 
-    # object_dict = dict(zip(key_list, value_list))
     return dict(zip(key_list, value_list))
 
 
-===============================================
-File name: ./is_object_in.py
+======================
+###### is_object_in.py #######
 def is_object_in(dict_obj, key, val):
 
     ## If is dictionary get the values for the key
@@ -122,41 +122,53 @@ def is_object_in(dict_obj, key, val):
         return True
     else:
         return False
-===============================================
-File name: ./main.py
+======================
+###### main.py #######
 import requests
 from bs4 import BeautifulSoup
 import lxml.html as lh
-import pandas as pd
 import re
 import sys
+import os
+import  os.path
 import configparser
 import os.path
 import time
 from func import *
 from get_objects_info import *
 from is_object_in import *
+from print_obj_dict import print_obj_dict
+from get_config_data import get_config_data
 
 def main():
 
     line = "=" * 50
-    # explisit_tag = "Shared cPanel"
     explisit_tag = "available stock"
-    url_gl = "https://racktables-001.sl5.misp.co.uk/racktables/index.php?page=depot"
+   
+    ## Check if file exist and is accessable!
     config_file = "/Users/akifyusein/.my_a_pass"
-    req = get_request_url_data(config_file, url_gl)
+    if not (os.path.isfile(config_file) and os.access(config_file, os.R_OK)):
+        print (f'File: {config_file} not found, or not accesable.')
+        sys.exit(1)
+
+    # Get dictionary with config variables for auth and urls
+    d = get_config_data (config_file) 
+
+    req = get_request_url_data(d['url'], d['username'], d['passwd'])
     soup = BeautifulSoup(req.text, 'lxml')
 
     # Create urls for all objects except PDU and cable organizer
-    urls = get_all_object_by_id(soup)
-    
-    ## Clear variable soup
+    urls = get_all_object_by_id(soup, d['base_url'])
     soup = ""
-
     # From each url in list get data and find objects with explisit tag Shared cPanel
+    i = 0
     for url in urls:
+        i += 1
+        if i > 10:
+            sys.exit(3)
+        
         try:
-            req = get_request_url_data(config_file, url)
+            req = get_request_url_data(url, d['username'], d['passwd'])
         except:
             print(f'Can not retrive: {url}')
             continue
@@ -166,6 +178,7 @@ def main():
         ## Get the key and lookup from command line!
         key = 'Explicit_tags'
         lookup = 'managed'
+        # lookup = 'available stock'
         flag = is_object_in(obj_dict, key, lookup)
 
         if flag == True:
@@ -177,12 +190,16 @@ def main():
  
 if __name__ == '__main__':
     main()
+======================
+###### print_obj_dict.py #######
+## Print each key value pair in dictionary!
+def print_obj_dict(object_dict, obj_id):
 
-## Hypervisor: Yes
-## Common name: hvhost-008
-## Contains: [ list of vms.......]
-## Object type: Server
-## Explicit tags: Tanium
-## Asset tag:
-===============================================
-for i in ./*.py; do echo File name: ./main.py;cat ./main.py; echo =====; done >> Readme
+    line = "=" * 50
+    print(line)
+    print(f'Object id: {obj_id}')
+    
+    if hasattr(object_dict, 'items'):    
+        for key, val in object_dict.items():
+            print(f'{key}: {val}')
+

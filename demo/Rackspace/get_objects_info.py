@@ -1,9 +1,18 @@
+"""
+Get table frm soup and extract the key value from html table
+## format of row in table:
+#<tr>
+# <th class="tdright sticker" width="50%">FQDN:</th>
+# <td class="tdleft"><a  href="ssh://mail8.webfaction.com">mail8.webfaction.com</a></td>
+#</tr>
+# In <th> tag is the key and in <td> tag is the value we are using to create dictionary
+"""
+
 def get_objects_info(beauty_soap):
+    """ Return dictionary with Rackspace objects info """
 
     key_list = []
     value_list = []
-    object_dict = {}
-    line = "=" * 50
 
     div = beauty_soap.find("div", {"class":"portlet"})
     table = div.find("table")
@@ -21,5 +30,3 @@ def get_objects_info(beauty_soap):
             value_list.append("No_value")
 
     return dict(zip(key_list, value_list))
-
-

@@ -1,0 +1,21 @@
+Object id: 2409
+Common_name: 006dusza
+Object_type: Server Or VM 
+Asset_tag: 3C49ZX1
+Backup_Method: xbackup
+Backup_Server: backup3.srv2.com
+cPanel_Version: 11.64.0.20
+Dell_Service_Tag: 3C49ZX1
+Firmware_iDRAC: 1.35.35
+FQDN: 006dusza.servers.eqx.misp.co.uk
+Hardware_Model: PowerEdge R620
+HW_type: Dell PowerEdge R620
+Inlet_Temp: 18
+iDrac_Version: 7
+Kernel_Version: 2.6.32-642.6.2.el6.x86_64
+Last_Backup: 1541786354
+Management_Type: Managed cPanel
+WHMCS_ID: V26404,Active,-27
+OS_type: CentOS V6
+Explicit_tags: MSD-Level 4, managed, Dedicated cPanel, vidahost
+Implicit_tags: Client server, Puppet classes, cPanel Server, paragon
