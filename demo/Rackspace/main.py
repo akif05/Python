@@ -1,10 +1,11 @@
 #! /Users/akifyusein/.virtualenvs/demo/bin/python
-
 """ Main function """
+
 import sys
 import os
 import os.path
 import re
+import argparse
 from bs4 import BeautifulSoup
 from func import get_request_url_data
 from func import get_all_object_by_id
@@ -12,6 +13,7 @@ from get_objects_info import get_objects_info
 from is_object_in import is_object_in
 from print_obj_dict import print_obj_dict
 from get_config_data import get_config_data
+from new_parser import parser
 
 ## This is main funciton
 def main():
@@ -21,6 +23,13 @@ def main():
     explisit_tag = "available stock"
     Check if file exist and is accessable!
     """
+    PARSER = argparse.ArgumentParser()
+    command_line_args =  parser(PARSER)
+    print(command_line_args)
+    sys.exit()
+
+
+
     config_file = "/Users/akifyusein/.my_a_pass"
     if not (os.path.isfile(config_file) and os.access(config_file, os.R_OK)):
         print(f'File: {config_file} not found, or not accesable.')
