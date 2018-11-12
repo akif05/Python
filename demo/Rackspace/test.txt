@@ -1,0 +1,6 @@
+Explicit_tags: managed, VDS cPanel, tsohost
+Implicit_tags: Client server, Puppet classes, cPanel Server, paragon
+==================================================
+Object id: 23951
+Object_type: VM
+Explicit_tags: Daily

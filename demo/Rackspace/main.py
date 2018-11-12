@@ -23,12 +23,17 @@ def main():
     explisit_tag = "available stock"
     Check if file exist and is accessable!
     """
-    PARSER = argparse.ArgumentParser()
-    command_line_args =  parser(PARSER)
-    print(command_line_args)
-    sys.exit()
+    flag = False 
+    parse = argparse.ArgumentParser()
 
+    ## If no any argumet passed print help and exit
+    if len(sys.argv) < 2:
+        parse.print_help()
+        sys.exit(1)
 
+    dic_cl_args = parser(parse)
+    print("Retriving objects with flowing details: ")
+    print_obj_dict(dic_cl_args, 0)
 
     config_file = "/Users/akifyusein/.my_a_pass"
     if not (os.path.isfile(config_file) and os.access(config_file, os.R_OK)):
@@ -37,7 +42,8 @@ def main():
 
     # Get dictionary with config variables for auth and urls
     dic_conf = get_config_data(config_file)
-
+    
+    print(f"Retriving data: {dic_conf['url']}")
     req = get_request_url_data(dic_conf['url'], dic_conf['username'], dic_conf['passwd'])
     soup = BeautifulSoup(req.text, 'lxml')
 
@@ -48,30 +54,30 @@ def main():
     i = 0
     for url in urls:
         i += 1
-        if i > 6:
+        if i > 5:
             sys.exit(3)
+ 
         try:
+            print(f"Retriving data: {url}")
             req = get_request_url_data(url, dic_conf['username'], dic_conf['passwd'])
         except:
             print(f'Can not retrive: {url}')
             continue
         soup = BeautifulSoup(req.text, 'lxml')
         obj_dict = get_objects_info(soup)
-
-        ## Get the key and lookup from command line!
-        key = 'Explicit_tags'
-        value = 'managed'
-        # value = "available stock"
-
-        # Check if key value find in obj_dict, which has all info for the object
-        # if find print the object, else continue with next object
-        flag = is_object_in(obj_dict, key, value)
-
-        if flag:
+ 
+        for key, value in dic_cl_args.items():
+            ## Check against the key value read from command line!
+            flag = is_object_in(obj_dict, key, value)
+            if flag == False:
+                break
+        
+        if flag == True: 
             # Get the object num form url and print out for user info.
             object_number = str(re.findall(r'object_id=([0-9]*)', url)).strip("[]'")
             print_obj_dict(obj_dict, object_number)
         else:
             continue
+
 if __name__ == '__main__':
     main()

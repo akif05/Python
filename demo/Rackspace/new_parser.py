@@ -32,5 +32,7 @@ def parser(PARSER):
     dictionary["Object_type"] = ARGS.object_type
     dictionary["Explicit_tags"] = ARGS.explicit_tags
     dictionary["Implicit_tags"] = ARGS.implicit_tags
-    
-    return dictionary
+  
+    ## Retrun dictionary with no None values! 
+    res = {k:v for k,v in dictionary.items() if v is not None} 
+    return res 

@@ -19,3 +19,14 @@ WHMCS_ID: V26404,Active,-27
 OS_type: CentOS V6
 Explicit_tags: MSD-Level 4, managed, Dedicated cPanel, vidahost
 Implicit_tags: Client server, Puppet classes, cPanel Server, paragon
+
+
+
+Object_type: VM
+Explicit_tags: managed, VDS cPanel, tsohost
+Implicit_tags: Client server, Puppet classes, cPanel Server, paragon
+./main.py --object_type=VM --explicit_tags='cPanel, vidahost'
+./main.py --object_type=VM --explicit_tags='VDS cPanel, managed, tshost'
+
+Object_type: VM
+Explicit_tags: managed, VDS cPanel, tsohost
