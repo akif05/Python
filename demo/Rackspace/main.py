@@ -13,7 +13,7 @@ from get_objects_info import get_objects_info
 from is_object_in import is_object_in
 from print_obj_dict import print_obj_dict
 from get_config_data import get_config_data
-from new_parser import parser
+from parser import parser
 
 ## This is main funciton
 def main():
@@ -54,7 +54,7 @@ def main():
     i = 0
     for url in urls:
         i += 1
-        if i > 5:
+        if i > 2:
             sys.exit(3)
  
         try:
@@ -66,9 +66,9 @@ def main():
         soup = BeautifulSoup(req.text, 'lxml')
         obj_dict = get_objects_info(soup)
  
-        for key, value in dic_cl_args.items():
+        for cl_key, cl_value in dic_cl_args.items():
             ## Check against the key value read from command line!
-            flag = is_object_in(obj_dict, key, value)
+            flag = is_object_in(obj_dict, cl_key, cl_value)
             if flag == False:
                 break
         

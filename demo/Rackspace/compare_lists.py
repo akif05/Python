@@ -18,9 +18,14 @@ def compare_lists(list1, list2):
     new1 = list1[0].split(', ')
     new2 = list2[0].split(', ')
     for item in new1:
-        for item2 in new2:
-            if str(item) == str(item2):
-                break
-        else:
-            return False
-    return True            
+        ## I item we gave from command line is in the objects 
+        ## Properties, breack and check the next one in the list
+        if str(item) not in new2:
+            break
+
+    ## If break didn't ocure meance that item of list 
+    ## is not in second, the we return False which will
+    ## Exlude the object 
+    else:
+        return True 
+    return False           

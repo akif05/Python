@@ -1,31 +1,38 @@
 """
 Parsing input and creating parameters to look for
 """
-from optparse import OptionParser
+import argparse
+import sys
 
-PARSER = OptionParser()
-PARSER.add_option("-b", "--backup_server",
-                  dest="backup_server",
-                  type="str",
-                  help="Find all servers backing up to this storage.")
-PARSER.add_option("-o", "--object_type",
-                  dest="object_type",
-                  type="str",
-                  help="Specify object type: Server or VM")
-PARSER.add_option("-e", "--explicit_tags",
-                  action="append",
-                  dest="explicit_tags",
-                  type="str",
-                  help="--explicit_tags='managed, Dedicated Server, MSD-Level4'")
-PARSER.add_option("-i", "--implicit_tags",
-                  action="append",
-                  dest="implicit_tags",
-                  type="str",
-                  help="--implicit_tags='Client Server, cPanel Server, paragon'")
-(OPTIONS, ARGS) = PARSER.parse_args()
+def parser(PARSER):
 
-print("backup_server is %s" % OPTIONS.backup_server)
-print("object_type is %s" % OPTIONS.object_type)
-print("explicit_tags is %s" % OPTIONS.explicit_tags)
-print("implicit_tags is %s" % OPTIONS.implicit_tags)
-print("non-option argument list is %s" % str(ARGS))
+    dictionary = {"Backup_Server":None, "Object_type":None, 
+                  "Explicit_tags":None, "Implicit_tags":None}
+    
+    # PARSER = argparse.ArgumentParser()
+    PARSER.add_argument("-b", "--backup_server",
+                        required=False, action="store", dest="backup_server",
+                        help="Find all servers backing up to this storage.",
+                        default=None)
+    PARSER.add_argument('-o', '--object_type',
+                        required=False, action="store", dest="object_type",
+                        help="Specify object type: Server or VM",
+                        default=None)
+    PARSER.add_argument("-e", "--explicit_tags",
+                        required=False, action="append", dest="explicit_tags",
+                        help="--explicit_tags='managed, Dedicated Server'",
+                        default=None)
+    PARSER.add_argument("-i", "--implicit_tags",
+                        required=False, action="append", dest="implicit_tags",
+                        help="--implicit_tags='Client Server, cPanel Server, paragon'",
+                        default=None)
+    
+    ARGS = PARSER.parse_args()
+    dictionary["Backup_Server"] = ARGS.backup_server
+    dictionary["Object_type"] = ARGS.object_type
+    dictionary["Explicit_tags"] = ARGS.explicit_tags
+    dictionary["Implicit_tags"] = ARGS.implicit_tags
+  
+    ## Retrun dictionary with no None values! 
+    res = {k:v for k,v in dictionary.items() if v is not None} 
+    return res 
