@@ -23,9 +23,9 @@ def compare_lists(list1, list2):
         if str(item) not in new2:
             break
 
-    ## If break didn't ocure meance that item of list 
-    ## is not in second, the we return False which will
-    ## Exlude the object 
+    ## If break didn't ocure meanse that item of list 
+    ## is not in second, then we return False which will
+    ## Exlude the object because is not matching the tags we are looking for
     else:
         return True 
     return False           
