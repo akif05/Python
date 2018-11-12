@@ -1,4 +1,10 @@
 ======================
+Usage examples:
+/main.py --object_type=Server --explicit_tags='available stock'
+/main.py -b 'backup3.srv2.com'
+/main.py --object_type=VM --explicit_tags='cPanel, vidahost'
+/main.py --object_type=VM --explicit_tags='cPanel, vidahost'
+./main.py --object_type=VM --explicit_tags='VDS cPanel, managed, tshost' --implicit_tags='Client server, paragon'
 ###### func.py #######
 import requests
 from bs4 import BeautifulSoup

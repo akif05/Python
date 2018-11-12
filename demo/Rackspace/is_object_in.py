@@ -8,7 +8,7 @@ def is_object_in(dict_obj, key, cl_val):
 
     """ Check object """
     ## If is dictionary get the obj_vlauess for the key
-    ## if the if object is not dictionary or 
+    ## if the if object is not dictionary or
     ## key obj_vlaues is not string return false
     # return True
     if hasattr(dict_obj, 'get'):
@@ -20,17 +20,18 @@ def is_object_in(dict_obj, key, cl_val):
             if None in obj_vlaues:
                 return False
         else:
+            # If key dosn't exist return -1
+            if dict_obj.get(key, -1) == -1:
+                return False
             obj_vlaues = dict_obj.get(key)
 
     ## Check if the obj_vlaues is list or string and is lookup string we
     ## Are looking for. If yes return True if not retrun False
-    #breakpoint()
-    
     ## If val is a list then check for each element in list
-    ## that is present in the list of the objects properties, 
+    ## that is present in the list of the objects properties,
     if isinstance(cl_val, list):
         flag = compare_lists(cl_val, obj_vlaues)
-        return flag 
-    else:
-        ## if val in obj_vlaues will return True, if not False
-        return cl_val in obj_vlaues
+        return flag
+
+    ## if val in obj_vlaues will return True, if not False
+    return cl_val in obj_vlaues
