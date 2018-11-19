@@ -1,0 +1,7 @@
+  cd PycharmProjects/
+  virtualenv Django
+  virtualenv -p /usr/local/bin/python3.7 Django
+  export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.7
+  source Django/bin/activate
+  pip install requests
+  deactivate

@@ -1,0 +1,5 @@
+# Create virtual environment  
+mkvirtualenv --python=`which python3` Django
+deactivate
+cd /Users/akifyusein/PyProjects/Projects/Django
+mkvirtualenv -a $(pwd) Django
